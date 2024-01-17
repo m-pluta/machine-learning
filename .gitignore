@@ -2,6 +2,7 @@ chinese-handwriting/
 data/
 *.npy
 *.xlsx
+hyperband/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
