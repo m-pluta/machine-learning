@@ -22,24 +22,24 @@
 
 = Introduction
 
-In this report, we will explore the application of deep learning & machine learning methods on a dataset comprising of Chinese (Simplified) characters, akin to the widely recognised MNIST dataset for handwritten digits. The significance of this study lies in the inherent complexity and variety in Chinese script, and the motivation lies in a personal interest of learning the language. The primary objective is to demonstrate the performance, tuning process, and limitations of two seperate machine learning models. 
-
-Mandarin Chinese is one of the most spoken languages with 1.3 billion native speakers globally. In countries with significant Chinese-speaking populations, the ability to accurately and automatically identify characters has applications across a variety of domains. To name a few:
+ Mandarin Chinese is one of the most spoken languages with 1.3 billion native speakers globally. In countries with significant Chinese-speaking populations, the ability to accurately and automatically identify characters has applications across a variety of domains. To name a few:
 
 - Recognising mail addresses in the postal service, reducing the dependency on manual sorting.
 - Digitisation of cultural heritage, where manual digitisation is too difficult or infeasible time-wise.
 - Improving accessibility for the visually impaired or those who have reading difficulties.
+
+This report explores the application of machine learning methods on a dataset comprising of Chinese (Simplified) characters, akin to the widely recognised MNIST dataset for handwritten digits. The significance of this study lies in the inherent complexity and variety in Chinese script, and the motivation lies in a personal interest of learning the language. The primary objective is to demonstrate the performance, tuning process, and limitations of two seperate machine learning models.
+
+\
 
 *#lorem(190)*
 
 
 = Dataset Overview
 
-While Chinese has more than 50,000 characters with roughly 6,500 in daily use, we will only deal with a subset part of the HSK 1 curriculum. HSK is Chinese Proficiency Exam with levels ranging from HSK 1 (Beginner) up to HSK 9 (Near native). 
+While Chinese has more than 50,000 characters with roughly 6,500 in daily use, we will only deal with a subset part of the HSK 1 curriculum. HSK is Chinese Proficiency Exam with levels ranging from HSK 1 (Beginner) up to HSK 9 (Near native).
 
-Chinese characters, also known as Hanzi, are composed of strokes, the basic units of writing, arranged in a specific order and direction. The way these strokes are combined gives rise to a vast array of characters, each with its own unique meaning and structure.
-
-The uniqueness of handwritten Chinese characters becomes even more pronounced when considering China's population. This alone leads to a huge variation in style, consistency, size, alignment, and thickness of strokes.
+Chinese characters, also known as Hanzi, are composed of strokes, the basic units of writing, arranged in a specific order and direction. The way these strokes are combined gives rise to a vast array of characters, each with its own unique meaning and structure. The uniqueness of handwritten Chinese characters becomes even more pronounced when considering China's population. This alone leads to a huge variation in style, consistency, size, alignment, and thickness of strokes.
 
 #figure(
   image("img/example_images.png", width: 90%),
@@ -50,7 +50,7 @@ The uniqueness of handwritten Chinese characters becomes even more pronounced wh
 
 = Dataset transformations
 
-The original dataset contains 178 classes of images, split using an 80/20 train-test split. To ensure the train and test sets were representative of the whole dataset and unbiased, the sets were merged and then shuffle-split again as a pre-processing step. This also meant the dataset could be standardised by working with one directory only.
+The original dataset @Dataset contains 178 classes of images, split using an 80/20 train-test split. To minimise bias to ensure the train and test sets were representative of the whole dataset, the sets were merged and then shuffle-split. This meant the dataset could be standardised by working with one directory only.
 
 == Image Resizing
 
@@ -84,6 +84,15 @@ This was a problem because the CNN used for feature extraction has specific inpu
 
 = Evaluation Metrics
 
+
+
+- *Accuracy*
+- *Precision*
+- *Recall*
+- *F1 Score*
+- *Training time*
+- *Inference Time*
+
 *#lorem(140)*
 
 = Model Evaluation
@@ -108,7 +117,7 @@ This was a problem because the CNN used for feature extraction has specific inpu
 
 == Lectures
 
-Throughout the lectures I have been most intrigued by the mathematical concepts that underpin each machine learning model. It made me happy knowing that the mathematical foundations I had practiced tirelessly last year were crucial to understanding both the inner workings of each model as well as the intuition behind how they all are developed.
+Throughout the lectures I was most intrigued by the mathematical concepts that underpin each machine learning model. It made me glad knowing that the mathematical foundations I had practiced tirelessly last year were crucial to understanding both the inner workings of each model as well as the intuition behind how they all were developed. The lectures also showed me that not all machine learning algorithms behave like a 'black box'
 
 
 

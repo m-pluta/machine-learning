@@ -1,5 +1,4 @@
 {
-    "editor.tabCompletion": "onlySnippets",
     "workbench.editor.tabSizing": "fixed",
     "workbench.editor.tabSizingFixedMaxWidth": 150
 }

@@ -16,7 +16,7 @@
   index-terms: (),
 
   // The article's paper size. Also affects the margins.
-  paper-size: "us-letter",
+  paper-size: "a4",
 
   // The path to a bibliography file if you want to cite some external
   // works.
@@ -36,7 +36,7 @@
     paper: paper-size,
     // The margins depend on the paper size.
     margin: if paper-size == "a4" {
-      (x: 41.5pt, top: 80.51pt, bottom: 89.51pt)
+      (x: 41.5pt, top: 50.51pt, bottom: 59.51pt)
     } else {
       (
         x: (50pt / 216mm) * 100%,
@@ -118,7 +118,7 @@
   // Display the paper's title.
   v(3pt, weak: true)
   align(center, text(18pt, title))
-  v(8.35mm, weak: true)
+  v(6.35mm, weak: true)
 
   // Display the authors list.
   for i in range(calc.ceil(authors.len() / 3)) {
@@ -149,7 +149,7 @@
       v(16pt, weak: true)
     }
   }
-  v(40pt, weak: true)
+  v(30pt, weak: true)
 
   // Start two column mode and configure paragraph properties.
   show: columns.with(2, gutter: 12pt)
