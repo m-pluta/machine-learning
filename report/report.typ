@@ -28,36 +28,29 @@ Mandarin Chinese is one of the most spoken languages with 1.3 billion native spe
 
 - Recognising mail addresses in the postal service, reducing the dependency on manual sorting.
 - Digitisation of cultural heritage, where manual digitisation is too difficult or infeasible time-wise.
-- Improving accessibility for the visually impaired or those who have reading difficulty.
+- Improving accessibility for the visually impaired or those who have reading difficulties.
 
-*#lorem(160)*
+*#lorem(190)*
 
 
 = Dataset Overview
 
-While Chinese has more than 50,000 characters in total and roughly 6,500 in common daily use, we will only deal with a subset of these, part of the HSK 1 curriculum. HSK is Chinese Proficiency Exam with levels ranging from HSK 1 (Beginner) up to HSK 9 (Near native). 
+While Chinese has more than 50,000 characters with roughly 6,500 in daily use, we will only deal with a subset part of the HSK 1 curriculum. HSK is Chinese Proficiency Exam with levels ranging from HSK 1 (Beginner) up to HSK 9 (Near native). 
 
-Chinese characters, also known as Hanzi, are composed of strokes, the basic units of writing, arranged in a specific order and direction. These strokes are traditionally classified into several basic types, including vertical, horizontal, dot, and hook, among others. The way these strokes are combined gives rise to a vast array of characters, each with its own unique meaning and structure.
+Chinese characters, also known as Hanzi, are composed of strokes, the basic units of writing, arranged in a specific order and direction. The way these strokes are combined gives rise to a vast array of characters, each with its own unique meaning and structure.
 
-The uniqueness of handwritten Chinese characters becomes even more pronounced when considering the vast scale of China and its numerous provinces, each with its own dialects, cultural influences, and educational practices. This alone leads to a huge variation in style, consistency, size, alignment, and thickness of strokes.
+The uniqueness of handwritten Chinese characters becomes even more pronounced when considering China's population. This alone leads to a huge variation in style, consistency, size, alignment, and thickness of strokes.
 
 #figure(
-  image("img/example_images.png", width: 91%),
+  image("img/example_images.png", width: 90%),
   caption: [
     Examples of images in the dataset
   ],
 )
 
-The original dataset features 178 different classes of images, split using an 80/20 train-test split. To ensure the train and test sets were representative of the whole dataset, the sets were merged together and then shuffle-split as a pre-processing step. An added benefit was that the dataset could be standardised in a much simpler way by working with one directory only.
-
-
-// $ x^"(i)" in RR^(64 times 64) $
-
-// $ y^"(i)" in {"HSK 1 characters"} $
-
-// $ "CNN_extract"(x^"(i)") in RR^(1304) $
-
 = Dataset transformations
+
+The original dataset contains 178 classes of images, split using an 80/20 train-test split. To ensure the train and test sets were representative of the whole dataset and unbiased, the sets were merged and then shuffle-split again as a pre-processing step. This also meant the dataset could be standardised by working with one directory only.
 
 == Image Resizing
 
