@@ -133,24 +133,15 @@ Instead, a custom CNN was developed using Keras' deep-learning library. The mode
 
 The CNN was tuned using a Bandit-Based tuner, Hyperband, provided by the Keras library. Once optimised, the model was cross-validated to ensure major overfitting was not present.
 
+
 #figure(
-  image("img/train_val_cnn.png", width: 120%),
+  image("img/train_val_cnn.png", width: 100%),
   caption: [
     Graph of training and validation accuracy throughout training the CNN
   ],
 ) <train_val_accuracy_cnn>
 
-From @train_val_accuracy_cnn it is clear that some overfitting is still present, however, this amount is tolerable. The reason for the model performing better on validation data in the first few epochs is due to the Dropout layer. While the model is 
-
-
-
-
-
-// The model was trained on validation data and achieved an average validation accuracy of 94.2%.
-
-
-
-
+From @train_val_accuracy_cnn it is clear that some overfitting is still present, however, this amount is tolerable. The reason for the model performing better on validation data in the first few epochs is due to the Dropout layer. A dropout layer is a regularisation mechanism that is turned on when training and is turned off when testing. This results in the model performing worse on the training data.
 
 = Evaluation Metrics
 
