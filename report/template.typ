@@ -160,9 +160,10 @@
   if abstract != none [
     #set text(weight: 600)
     #h(1em) _Abstract_---#abstract
-
+    #v(3pt)
     #if index-terms != () [
     #h(1em)_Index terms_---#index-terms.join(", ")
+    #v(-7pt)
     ]
   ]
 

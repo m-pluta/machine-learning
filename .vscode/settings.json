@@ -1,4 +1,10 @@
 {
     "workbench.editor.tabSizing": "fixed",
-    "workbench.editor.tabSizingFixedMaxWidth": 150
+    "workbench.editor.tabSizingFixedMaxWidth": 150,
+    "grammarly.selectors": [
+        {
+            "language": "typst",
+            "scheme": "file"
+        }
+    ]
 }
