@@ -3,7 +3,7 @@
 #show: ieee.with(
   title: [COMP2261 - Machine Learning Report],
   abstract: [
-    #lorem(20)
+    This study compares k-Nearest Neighbors (kNN) and Logistic Regression for classifying Chinese characters by evaluating the models' accuracy and efficiency in handling high-dimensional data, thereby providing insights into complex character recognition and other digital applications.
   ],
   authors: (
     (
@@ -39,7 +39,7 @@ This report explores the application of machine learning methods on a dataset co
 
 The primary objective is to demonstrate the performance, tuning process, and limitations of two separate machine learning models.
 
-*#lorem(110)*
+*#lorem(86)*
 
 = Dataset Overview
 
@@ -131,7 +131,7 @@ While pre-trained CNNs such as Resnet50 were initially considered due to their s
 
 Instead, a custom CNN was developed using Keras' deep-learning library. The model features 3 2D-Convolution layers, each followed by a MaxPooling layer. While developing the model, severe overfitting was noticed. This was addressed by adding Dropout layers to the model, which would randomly set a fraction of the input units to 0. This improved the model's ability to generalise.
 
-The CNN was tuned using a Bandit-Based tuner, Hyperband, provided by the Keras library. Once optimised, the model was cross-validated to ensure major overfitting was not present.
+The CNN was tuned using a Bandit-Based tuner, Hyperband @Hyperband, provided by the Keras library. Once optimised, the model was cross-validated to ensure major overfitting was not present.
 
 
 #figure(
@@ -141,7 +141,7 @@ The CNN was tuned using a Bandit-Based tuner, Hyperband, provided by the Keras l
   ],
 ) <train_val_accuracy_cnn>
 
-From @train_val_accuracy_cnn it is clear that some overfitting is still present, however, this amount is tolerable. The reason for the model performing better on validation data in the first few epochs is due to the Dropout layer. A dropout layer is a regularisation mechanism that is turned on when training and is turned off when testing. This results in the model performing worse on the training data.
+From @train_val_accuracy_cnn it is clear that some overfitting is still present, however, this amount is tolerable. The reason for the model performing better on validation data in the first few epochs is due to the Dropout layer. A dropout layer is a regularisation mechanism that is turned on when training and is turned off when testing. This results in the model performing worse on the training data. @Soleymani_2022 @Keras
 
 = Evaluation Metrics
 
@@ -152,34 +152,69 @@ From @train_val_accuracy_cnn it is clear that some overfitting is still present,
 
 = Model Evaluation
 
-*#lorem(100)*
+== Overview & Justification
+
+For our baseline model, we've selected kNN (k-Nearest Neighbors), a standard, naive algorithm used in classification tasks. Our proposed model is Logistic Regression, chosen for its specific benefits suited to this dataset.
+
+Starting with kNN, it is a non-parametric, lazy-learner. Unlike typical models that learn patterns from training data, kNN instead defers all computations until it's time to make predictions on new data. This characteristic may be advantageous on smaller datasets, but given the large size of our dataset, it could significantly impact the speed of making predictions.
+
+Additionally, kNN suffers a key drawback, the Curse of Dimensionality. The kNN algorithm assumes that similar points in space share the same label @Curse. While this may be the case for smaller dimensions, the feature vectors we obtained in the data exploration section have dimensionality 512, this means that any two vectors belonging to the same class may not be close to each other at all. 
+
+On the other hand, logistic Regression is a parametric model that learns the weights of the features during the training process, which makes it more suitable for handling high-dimensional data @KNN_Logistic_Comparison.
+
+Another key benefit of logistic regression is its efficiency. Unlike kNN which requires storing the entire dataset and searching for the k nearest neighbours on each prediction, logistic regression only needs to apply the learned weights to the test data, likely making predictions much faster especially for large datasets.
+
+== Parameter exploration - kNN
+
+Although kNN is classified as a lazy learner and lacks traditional parameters, it utilizes several hyperparameters including `n_neighbors`, `weights`, `metric`, `p`, `leaf_size`, and `algorithm`. Through experimenting, I found that the hyperparameters `n_neighbors`, `weights`, and `metric` significantly impacted validation accuracy, leading me to focus on their optimization.
+
+I began by first exploring the relationship between `n_neighbors` and validation accuracy.
 
 #figure(
-  image("img/model_eval.svg", width: 90%),
+  image("img/knn_k_metric.png", width: 110%),
   caption: [
-    Accuracy of K-Nearest Neighbours for varying k
+    Accuracy & F1 Score of K-Nearest Neighbours with varying k
   ],
 )
 
-*#lorem(100)*
+I found that the optimal values for `n_neighbors` lie somewhere between 5 and 20, which allowed me to narrow down the field of possible candidate values. Additionally, I noticed that the f1-score was roughly correlated with the validation accuracy, which led me to believe that the model was effective at not only being accurate but also at maintaining a good balance in avoiding misclassifications.
 
 #figure(
   table(
-    columns: (92pt, 65pt, 67pt),
+    columns: (65pt, 54pt, auto),
     align: horizon,
     inset: (
       x: 8pt,
       y: 5pt
     ),
-    [*Hyperparameter*], [*Default*], [*GridSearch *],
-    [`n_neighbours`], [`5`], [`10`],
-    [`weights`], [`'uniform'`], [`'distance'`],
-    [`metric`], [`'minkowski'`], [`'euclidean'`],
+    [], [*Default*], [*Candidate Values*],
+    [`n_neighbours`], [`5`], [`range(5, 20)`],
+    [`weights`], [`'uniform'`], [`'uniform', 'distance'`],
+    [`metric`], [`'minkowski'`], [`'euclidean', 'manhattan', 'minkowski'`],
   ),
   caption: [
-    Summary of tuned hyperparameters for \ k-Nearest-Neighbours
+    Summary of kNN hyperparameters and candidate values
   ],
 )
+
+By performing an exhaustive Grid Search of all the possible configurations, I found that `n_neighbors`=`10`, `weights`=`'distance'`, and `metric`=`'euclidean'` were ideal. 
+
+== Parameter exploration - Logistic Regression
+
+On the other hand, logistic regression does have parameters which are intrinsic to its model. More specifically, logistic regression assigns weights to each feature and adjusts these weights during the training process.
+
+Similarly to kNN, logistic regression also has its hyperparameters, namely `solver`, `C`, `penalty`
+
+
+
+
+
+Since my task was concerned with multi-class classification, there were 
+
+
+i can only use saga, sag, newton-cg, lbfgs
+
+
 
 #figure(
   table(
@@ -199,22 +234,21 @@ From @train_val_accuracy_cnn it is clear that some overfitting is still present,
   ],
 )
 
-
-*#lorem(100)*
-
 #figure(
-  image("img/wrong_predictions.png", width: 90%),
-  caption: [
-    Distribution of image dimensions in the original dataset
-  ],
-)
-
-#figure(
-  image("img/knn_k_metric.png", width: 90%),
+  image("img/model_eval.svg", width: 90%),
   caption: [
     Accuracy vs Training Accuracy of Logistic Regression with varying amounts of training samples
   ],
 )
+
+// #figure(
+//   image("img/wrong_predictions.png", width: 90%),
+//   caption: [
+//     Distribution of image dimensions in the original dataset
+//   ],
+// )
+
+
 
 
 
@@ -226,7 +260,7 @@ Throughout the lectures, I was most intrigued by the mathematical concepts that 
 
 == Coursework
 
-One particular thing this coursework has taught me 
+One particular thing this coursework has taught me is the machine learning workflow. The lectures didn't go into much detail about the practical aspect, however, this coursework was a very good introduction on how to approach a machine learning problem. From data preprocessing and feature selection to model training and evaluation, I learned to consider each step critically. Most importantly this coursework highlighted the iterative nature of machine learning, where models are continuously refined based on performance metrics.
 
 == Module difficulties
 
@@ -238,4 +272,4 @@ I believe the biggest challenge of this assignment was the size of the dataset a
 
 == Unique contributions
 
-While my models do not constitute anything novel, I find it nevertheless an area of research that should be explored. 
+While my models do not constitute anything novel, I find it nevertheless an area of research that should and likely will be explored.
