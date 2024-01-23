@@ -30,6 +30,13 @@
 
 This report explores the application of machine learning methods on a dataset comprising Chinese (Simplified) characters, akin to the widely recognised MNIST dataset for handwritten digits. The significance of this study lies in the inherent complexity and variety of Chinese script, and the motivation lies in a personal interest in learning the language. The primary objective is to demonstrate the performance, tuning process, and limitations of two separate machine learning models.
 
+#figure(
+  image("img/ml_system.png", width: 90%),
+  caption: [
+    Workflow of the proposed ML System
+  ],
+)
+
 \
 
 *#lorem(160)*
@@ -55,21 +62,21 @@ The original dataset @Dataset contains 178 classes of images, split using an 80/
 
 One evident issue with the original dataset were the varying image dimensions.
 
-#figure(
-  image("img/image_dimension_distribution.svg", width: 100%),
-  caption: [
-    Distribution of image dimensions in the original dataset
-  ],
-)
+// #figure(
+//   image("img/image_dimension_distribution.svg", width: 100%),
+//   caption: [
+//     Distribution of image dimensions in the original dataset
+//   ],
+// )
 
 This was a problem because the CNN used for feature extraction has specific input tensor dimension requirements, hence, all images had to be standardised. $48 times 48$ was chosen as a suitable image size as it meant most images could be downsampled. Downsampling is often a better technique than upsampling as it doesn't limit the model's ability to learn key features like object boundaries. Additionally, due to the complexity of Chinese characters, the image dimensions could not be reduced further due to loss of information.
 
-#figure(
-  image("img/class_imbalance.svg", width: 100%),
-  caption: [
-    Distribution of the number of samples in each image class.
-  ],
-)
+// #figure(
+//   image("img/class_imbalance.svg", width: 100%),
+//   caption: [
+//     Distribution of the number of samples in each image class.
+//   ],
+// )
 
 From further exploration, a class imbalance was evident.
 
@@ -91,11 +98,6 @@ From further exploration, a class imbalance was evident.
 )
 
 Evaluating the imbalance ratio, IQR, and coefficient of variation, it was clear the imbalance was minimal and insignificant.
-
-#v(50pt)
-
-
-
 
 
 == Feature Extraction
@@ -137,9 +139,9 @@ $ "extract"(x^"(i)") = f^"(i)" in RR^512 $
 = Evaluation Metrics
 
 - *Weighted Accuracy* - Since my dataset has a small amount of imbalance, to be on the safe side I will use the weighted accuracy across all predicted classes instead of average accuracy.
-- *F1 Score* - In my classification problem there is no greater negative impact caused by a low sensitivity (Recall). This is not the case with something like medical image classification where low sensitivity could have serious consequences. Therefore, it is more appropriate to use the F1 score which is the harmonic mean of Recall and Precision as they correlate inversely with each other.
-- *Training time* - While the total number of Chinese characters remains fairly constant, every so often new characters for complex ideas or newly discovered chemical elements are proposed, and this would warrant retraining/adjusting the model.
-- *Inference Time* - In applications such as real-time translation, language learning, or even autonomous driving where signs need to be read within fractions of a second, it is crucial to identify text with minimal latency. Additionally, for services with large volumes of data, an efficient, scalable, high-throughput system is necessary.
+- *F1 Score* - In my classification problem there is no greater negative impact caused by a low sensitivity (Recall). This is not the case with something like medical image classification where low sensitivity could have serious consequences. Therefore, I will use the F1 score which is the harmonic mean of Recall and Precision as they correlate inversely with each other.
+- *Training time* - While the total number of Chinese characters remains fairly constant, every so often new characters for complex ideas or newly discovered chemical elements are proposed, and this would warrant retraining/adjusting the model. A faster training would allow the model to updated quicker.
+- *Inference Time* - In applications such as real-time translation, language learning, or even autonomous driving where signs need to be read within fractions of a second, it is crucial to identify text with minimal latency. Additionally, for services with large volumes of data, an efficient, scalable, and high-throughput system is ideal.
 
 = Model Evaluation
 
@@ -163,12 +165,12 @@ $ "extract"(x^"(i)") = f^"(i)" in RR^512 $
       y: 5pt
     ),
     [*Hyperparameter*], [*Default*], [*GridSearch *],
-    [`n_neighbours`], [5], [10],
+    [`n_neighbours`], [`5`], [`10`],
     [`weights`], [`'uniform'`], [`'distance'`],
     [`metric`], [`'minkowski'`], [`'euclidean'`],
   ),
   caption: [
-    Dataset imbalance metric values
+    Summary of tuned hyperparameters for \ k-Nearest-Neighours
   ],
 )
 
@@ -183,11 +185,10 @@ $ "extract"(x^"(i)") = f^"(i)" in RR^512 $
     [*Hyperparameter*], [*Default*], [*GridSearch*],
     [`solver`], [`'lbfgs'`], [`'lbfgs'`],
     [`penalty`], [`'l2'`], [`'l2'`],
-    [`C`], [1], [1],
-    [`l1_ratio` \ ('saga' only)], [`None`], [`None`],
+    [`C`], [`1`], [`5`],
   ),
   caption: [
-    Dataset imbalance metric values
+    Summary of tuned hyperparameters for \ Logistic Regression
   ],
 )
 
