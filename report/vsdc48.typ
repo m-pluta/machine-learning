@@ -39,7 +39,9 @@ This report explores the application of machine learning methods on a dataset co
 
 The primary objective is to demonstrate the performance, tuning process, and limitations of two separate machine learning models.
 
-*#lorem(86)*
+== Project Summary
+
+The study conclusively demonstrated that Logistic Regression significantly outperforms k-Nearest Neighbors (kNN) in terms of accuracy and inference time when classifying Chinese characters. However, Logistic Regression's longer training time becomes a substantial limitation when dealing with large datasets. The key lesson from this project is the importance of selecting an appropriate algorithm that is not only effective but also scalable, taking into account the size & complexity of the dataset.
 
 = Dataset Overview
 
@@ -59,6 +61,8 @@ The uniqueness of handwritten Chinese characters becomes even more pronounced wh
 = Dataset transformations
 
 The original dataset @Dataset contains 178 classes of images, split using an 80/20 train-test split. The images are greyscale with a 1:1 aspect ratio, and in total there are 131,946 samples. To minimise bias and to ensure the train and test sets were representative of the whole dataset, the sets were merged and then shuffle-split through stratification. This also allowed the dataset to be standardised using one directory only.
+
+#v(2pt)
 
 == Image Resizing
 
@@ -162,7 +166,7 @@ Additionally, kNN suffers a key drawback, the Curse of Dimensionality. The kNN a
 
 On the other hand, logistic Regression is a parametric model that learns the weights of the features during the training process, which makes it more suitable for handling high-dimensional data @KNN_Logistic_Comparison.
 
-Another key benefit of logistic regression is its efficiency. Unlike kNN which requires storing the entire dataset and searching for the k nearest neighbours on each prediction, logistic regression only needs to apply the learned weights to the test data, likely making predictions much faster especially for large datasets.
+Another key benefit of logistic regression is its efficiency. Unlike kNN which requires storing the entire dataset and searching for the k nearest neighbors on each prediction, logistic regression only needs to apply the learned weights to the test data, likely making predictions much faster especially for large datasets.
 
 == Parameter exploration - kNN
 
@@ -181,10 +185,10 @@ I found that the optimal values for `n_neighbors` lie somewhere between 5 and 20
 
 #figure(
   table(
-    columns: (65pt, 54pt, auto),
+    columns: (auto, auto, auto),
     align: horizon,
     inset: (
-      x: 8pt,
+      x: 4pt,
       y: 5pt
     ),
     [], [*Default*], [*Candidate Values*],
@@ -203,36 +207,31 @@ By performing an exhaustive Grid Search of all the possible configurations, I fo
 
 On the other hand, logistic regression does have parameters which are intrinsic to its model. More specifically, logistic regression assigns weights to each feature and adjusts these weights during the training process.
 
-Similarly to kNN, logistic regression also has its hyperparameters, namely `solver`, `C`, `penalty`
+Similarly to kNN, logistic regression also has its hyperparameters, namely `solver`, `C`, `penalty`, `dual`, `tol`, `l1_ratio`. Once again, from experimentation, I found that `solver`, `C`, `penalty`, and `l1_ratio` (if `penalty` was set to `elasticnet`) were the most influential in terms of training time and validation accuracy.
 
-
-
-
-
-Since my task was concerned with multi-class classification, there were 
-
-
-i can only use saga, sag, newton-cg, lbfgs
-
+Since my task was concerned with multi-class classification, only the `lbfgs`, `newton-cg`, `sag`, and `saga` solvers supported multinomial loss and so this reduced my field of candidate values.
 
 
 #figure(
   table(
-    columns: (92pt, 65pt, 67pt),
+    columns: (auto, auto, 140pt),
     align: horizon,
     inset: (
-      x: 8pt,
+      x: 4pt,
       y: 5pt
     ),
-    [*Hyperparameter*], [*Default*], [*GridSearch*],
-    [`solver`], [`'lbfgs'`], [`'lbfgs'`],
-    [`penalty`], [`'l2'`], [`'l2'`],
-    [`C`], [`1`], [`5`],
+    [], [*Default*], [*GridSearch*],
+    [`solver`], [`'lbfgs'`], [`'lbfgs', 'newton-cg', 'sag', 'saga'`],
+    [`penalty`], [`'l2'`], [`'l1', 'l2', 'elasticnet', 'None'`],
+    [`C`], [`1`], [`10, 5, 1, 0.5, 0.1`],
+    [`l1_ratio` \ (saga only)], [`None`], [`0.25, 0.5, 0.75`],
   ),
   caption: [
-    Summary of tuned hyperparameters for \ Logistic Regression
+    Summary of hyperparameters for \ Logistic Regression and candidate values
   ],
 )
+
+Similarly, by performing an exhaustive Grid Search of all the possible configurations, I found that `solver`=`lbfgs`, `C`=`5`, and `penalty`=`l2` were ideal. 
 
 #figure(
   image("img/model_eval.svg", width: 90%),
@@ -241,6 +240,8 @@ i can only use saga, sag, newton-cg, lbfgs
   ],
 )
 
+Upon comparing the performance of both models against each other with varying amounts of training data, it was clear that logistic regression was much more accurate at classifying and was on average 8% more accurate (92% vs 84%). Unsurprisingly, it was also clear that the kNN model was much faster at training. This was essentially because kNN's 'training' is just loading the feature vectors into memory. Most importantly, the logistic regression model had a much lower inference time, which is solely attributed to the way it learns the training data and updates its weights. In theory, this makes the logistic regression model much more scalable.
+
 // #figure(
 //   image("img/wrong_predictions.png", width: 90%),
 //   caption: [
@@ -248,9 +249,7 @@ i can only use saga, sag, newton-cg, lbfgs
 //   ],
 // )
 
-
-
-
+#v(-5pt)
 
 = Self Evaluation
 
@@ -273,3 +272,5 @@ I believe the biggest challenge of this assignment was the size of the dataset a
 == Unique contributions
 
 While my models do not constitute anything novel, I find it nevertheless an area of research that should and likely will be explored.
+
+#v(-15pt)
